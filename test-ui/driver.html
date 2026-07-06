@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Driver</title>
+</head>
+<body>
+
+<h1>🚕 Driver App</h1>
+
+<h2 id="status">
+Waiting for ride...
+</h2>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+
+<script>
+const socket = io("http://192.168.100.28:5000");
+
+socket.on("ride_received", () => {
+  document.getElementById("status")
+    .innerText = "🚖 New Ride Request!";
+});
+</script>
+
+</body>
+</html>
