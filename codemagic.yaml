@@ -1,0 +1,58 @@
+# First-stage cloud builds. These workflows compile the apps without signing them.
+# A signed IPA for a physical iPhone requires Apple Developer signing credentials.
+workflows:
+  toteel-rider-ios-unsigned:
+    name: Toteel Rider Sudan - iOS compile check
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+    scripts:
+      - name: Install XcodeGen
+        script: |
+          if ! command -v xcodegen >/dev/null 2>&1; then brew install xcodegen; fi
+      - name: Generate Rider Xcode project
+        script: |
+          cd "$CM_BUILD_DIR/ios/ToteelRider"
+          xcodegen generate
+      - name: Compile Rider for iOS device (unsigned)
+        script: |
+          xcodebuild \
+            -project "$CM_BUILD_DIR/ios/ToteelRider/ToteelRider.xcodeproj" \
+            -scheme ToteelRider \
+            -configuration Debug \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$CM_BUILD_DIR/ios/ToteelRider/build" \
+            CODE_SIGNING_ALLOWED=NO build
+    artifacts:
+      - ios/ToteelRider/build/Build/Products/Debug-iphoneos/ToteelRider.app
+      - /tmp/xcodebuild_logs/*.log
+
+  toteel-driver-ios-unsigned:
+    name: Toteel Driver Sudan - iOS compile check
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+    environment:
+      xcode: latest
+    scripts:
+      - name: Install XcodeGen
+        script: |
+          if ! command -v xcodegen >/dev/null 2>&1; then brew install xcodegen; fi
+      - name: Generate Driver Xcode project
+        script: |
+          cd "$CM_BUILD_DIR/ios/ToteelDriver"
+          xcodegen generate
+      - name: Compile Driver for iOS device (unsigned)
+        script: |
+          xcodebuild \
+            -project "$CM_BUILD_DIR/ios/ToteelDriver/ToteelDriver.xcodeproj" \
+            -scheme ToteelDriver \
+            -configuration Debug \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$CM_BUILD_DIR/ios/ToteelDriver/build" \
+            CODE_SIGNING_ALLOWED=NO build
+    artifacts:
+      - ios/ToteelDriver/build/Build/Products/Debug-iphoneos/ToteelDriver.app
+      - /tmp/xcodebuild_logs/*.log

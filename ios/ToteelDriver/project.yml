@@ -1,0 +1,33 @@
+name: ToteelDriver
+options:
+  bundleIdPrefix: com.toteel.ios
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  SocketIOClientSwift:
+    url: https://github.com/socketio/socket.io-client-swift
+    from: 16.1.1
+targets:
+  ToteelDriver:
+    type: application
+    platform: iOS
+    sources:
+      - Sources/ToteelDriver
+    dependencies:
+      - package: SocketIOClientSwift
+        product: SocketIO
+    info:
+      properties:
+        NSLocationWhenInUseUsageDescription: "Toteel Driver uses your location to receive nearby Sudan ride requests and share your position during a trip."
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.toteel.ios.driver
+        PRODUCT_NAME: ToteelDriver
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+        GENERATE_INFOPLIST_FILE: YES
