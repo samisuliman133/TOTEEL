@@ -17,6 +17,7 @@ targets:
       - package: SocketIOClientSwift
         product: SocketIO
     info:
+      path: Info.plist
       properties:
         NSLocationWhenInUseUsageDescription: "Toteel Driver uses your location to receive nearby Sudan ride requests and share your position during a trip."
         NSAppTransportSecurity:
